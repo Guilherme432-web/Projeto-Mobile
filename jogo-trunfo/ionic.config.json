@@ -1,0 +1,7 @@
+{
+  "name": "jogo-trunfo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
