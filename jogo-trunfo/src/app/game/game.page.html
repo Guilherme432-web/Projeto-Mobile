@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Batalha de Trunfo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    @if (loading) {
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Carregando batalha...</p>
+    } @else {
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Seu Herói: {{ selectedHero?.name | uppercase }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <img [src]="selectedHero?.images.sm" alt="Imagem do herói" style="width: 100px; height: 100px;" />
+          <p>Força: {{ selectedHero?.powerstats.strength }}</p>
+          <p>Poder Total: {{ selectedHero | powerTotal }}</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Oponente: {{ opponent?.name | uppercase }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <img [src]="opponent?.images.sm" alt="Imagem do oponente" style="width: 100px; height: 100px;" />
+          <p>Força: {{ opponent?.powerstats.strength }}</p>
+          <p>Poder Total: {{ opponent | powerTotal }}</p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-button expand="block" color="danger" (click)="battle()" [disabled]="battleDone">
+        Batalhar! (Comparar Força)
+      </ion-button>
+
+      @if (battleDone) {
+        <ion-card [appPowerful]="winner?.powerstats.power"> 
+          <ion-card-header>
+            <ion-card-title>{{ winner?.name | uppercase }} Venceu!</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Parabéns! Você ganhou com {{ selectedHero?.powerstats.strength }} de força.</p>
+            @if (winner !== selectedHero) {
+              <p>Que pena! O oponente venceu com {{ opponent?.powerstats.strength }} de força.</p>
+            }
+          </ion-card-content>
+        </ion-card>
+        <ion-button expand="block" color="primary" (click)="newBattle()">
+          Nova Batalha
+        </ion-button>
+      }
+    }
+  </div>
+</ion-content>

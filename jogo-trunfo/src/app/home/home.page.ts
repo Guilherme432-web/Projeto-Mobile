@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SuperheroService } from '../services/superhero';
 import { Powerful } from '../directives/powerful';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonList, IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from '@ionic/angular/standalone';
+import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonList, IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonSearchbar } from '@ionic/angular/standalone';
 import { UpperCasePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms'; 
 
 @Component({
   selector: 'app-home',
@@ -11,19 +12,28 @@ import { UpperCasePipe } from '@angular/common';
   styleUrls: ['home.page.scss'],
   standalone: true,
   imports: [
-    Powerful, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonList, IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardContent, UpperCasePipe
+    Powerful, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonSpinner, IonList, IonItem, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonSearchbar, UpperCasePipe, FormsModule
   ]
 })
-export class HomePage implements OnInit {
+export class HomePage {
   heroes: any[] = [];
-  loading = true;
+  allHeroes: any[] = [];  
+  filteredHeroes: any[] = []; 
+  loading = false;
+  gameStarted = false;
+  searchTerm = '';  
+  currentPage = 0;  
+  itemsPerPage = 10;  
 
   constructor(private superheroService: SuperheroService, private router: Router) {}
 
-  ngOnInit() {
+  startGame() {
+    this.gameStarted = true;
+    this.loading = true;
     this.superheroService.getAllHeroes().subscribe({
       next: (data) => {
-        this.heroes = data.slice(0, 10);
+        this.allHeroes = data;  
+        this.loadPage();  
         this.loading = false;
       },
       error: (err) => {
@@ -33,7 +43,38 @@ export class HomePage implements OnInit {
     });
   }
 
-  startGame() {
-    this.router.navigate(['/game'], { queryParams: { heroId: this.heroes[0]?.id || 1 } });
+  loadPage() {
+    const start = this.currentPage * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.heroes = this.allHeroes.slice(start, end);  
+    this.filterHeroes();  
+  }
+
+  filterHeroes() {
+    if (this.searchTerm.trim() === '') {
+      this.filteredHeroes = this.heroes; 
+    } else {
+      this.filteredHeroes = this.heroes.filter(hero =>
+        hero.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  }
+
+  nextPage() {
+    if ((this.currentPage + 1) * this.itemsPerPage < this.allHeroes.length) {
+      this.currentPage++;
+      this.loadPage();
+    }
+  }
+
+  previousPage() {
+    if (this.currentPage > 0) {
+      this.currentPage--;
+      this.loadPage();
+    }
+  }
+
+  selectHero(hero: any) {
+    this.router.navigate(['/game', hero.id]);
   }
 }

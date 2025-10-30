@@ -12,31 +12,59 @@
   </ion-header>
 
   <div id="container">
-    <strong>Bem-vindo ao Jogo do Trunfo!</strong>
-    <p>Compare atributos de super-heróis e vença!</p>
-
-    <ion-button expand="block" color="primary" (click)="startGame()">
-      Iniciar Jogo
-    </ion-button>
-
-    @if (loading) {
-      <ion-spinner name="crescent"></ion-spinner>
+    <!-- Tela Inicial de Boas-Vindas -->
+    @if (!gameStarted) {
+      <strong>Bem-vindo ao Jogo do Trunfo!</strong>
+      <p>Compare atributos de super-heróis e vença!</p>
+      <ion-button expand="block" color="primary" (click)="startGame()">
+        Iniciar Jogo
+      </ion-button>
     } @else {
-      <ion-list>
-        @for (hero of heroes; track hero.id) {
-          <ion-item [appPowerful]="hero.powerstats.power">
-            <ion-card>
-              <ion-card-header>
-                <ion-card-title>{{ hero.name | uppercase }}</ion-card-title>
-              </ion-card-header>
-              <ion-card-content>
-                <p>Força: {{ hero.powerstats.strength }}</p>
-                <p>Velocidade: {{ hero.powerstats.speed }}</p>
-              </ion-card-content>
-            </ion-card>
-          </ion-item>
-        }
-      </ion-list>
+      <!-- Barra de Pesquisa -->
+      <ion-searchbar 
+        placeholder="Pesquisar herói..." 
+        [(ngModel)]="searchTerm" 
+        (ionInput)="filterHeroes()">
+      </ion-searchbar>
+
+      <!-- Lista de Heróis Filtrados -->
+      @if (loading) {
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Carregando heróis...</p>
+      } @else {
+        <h3>Selecione um Herói para Jogar (Página {{ currentPage + 1 }}):</h3>
+        <ion-list>
+          @for (hero of filteredHeroes; track hero.id) {
+            <ion-item [appPowerful]="hero.powerstats.power" (click)="selectHero(hero)">
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>{{ hero.name | uppercase }}</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                  <p>Força: {{ hero.powerstats.strength }}</p>
+                  <p>Velocidade: {{ hero.powerstats.speed }}</p>
+                </ion-card-content>
+              </ion-card>
+            </ion-item>
+          }
+        </ion-list>
+
+        <!-- Botões de Paginação -->
+        <ion-button 
+          expand="block" 
+          color="secondary" 
+          [disabled]="currentPage === 0" 
+          (click)="previousPage()">
+          Anterior
+        </ion-button>
+        <ion-button 
+          expand="block" 
+          color="secondary" 
+          [disabled]="(currentPage + 1) * itemsPerPage >= allHeroes.length" 
+          (click)="nextPage()">
+          Próximo
+        </ion-button>
+      }
     }
   </div>
 </ion-content>
