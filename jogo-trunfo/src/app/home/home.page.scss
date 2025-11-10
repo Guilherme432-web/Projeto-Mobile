@@ -1,15 +1,12 @@
 #container {
   text-align: center;
   padding: 20px;
-  background: linear-gradient(to bottom, #ff0000, #0000ff);  // Gradiente temático
-  color: white;
   min-height: 100vh;
 }
 
 ion-card {
   margin: 10px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 ion-button {
@@ -17,7 +14,5 @@ ion-button {
 }
 
 ion-searchbar {
-  --background: rgba(255, 255, 255, 0.8);
-  --color: black;
   margin-bottom: 20px;
 }

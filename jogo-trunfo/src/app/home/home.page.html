@@ -12,7 +12,6 @@
   </ion-header>
 
   <div id="container">
-    <!-- Tela Inicial de Boas-Vindas -->
     @if (!gameStarted) {
       <strong>Bem-vindo ao Jogo do Trunfo!</strong>
       <p>Compare atributos de super-heróis e vença!</p>
@@ -20,14 +19,12 @@
         Iniciar Jogo
       </ion-button>
     } @else {
-      <!-- Barra de Pesquisa -->
       <ion-searchbar 
         placeholder="Pesquisar herói..." 
         [(ngModel)]="searchTerm" 
         (ionInput)="filterHeroes()">
       </ion-searchbar>
 
-      <!-- Lista de Heróis Filtrados -->
       @if (loading) {
         <ion-spinner name="crescent"></ion-spinner>
         <p>Carregando heróis...</p>
@@ -49,7 +46,6 @@
           }
         </ion-list>
 
-        <!-- Botões de Paginação -->
         <ion-button 
           expand="block" 
           color="secondary" 

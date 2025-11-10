@@ -42,10 +42,10 @@
             <ion-card-title>{{ winner?.name | uppercase }} Venceu!</ion-card-title>
           </ion-card-header>
           <ion-card-content>
+            @if (winner == selectedHero) {
             <p>Parabéns! Você ganhou com {{ selectedHero?.powerstats.strength }} de força.</p>
-            @if (winner !== selectedHero) {
-              <p>Que pena! O oponente venceu com {{ opponent?.powerstats.strength }} de força.</p>
-            }
+            }@else {
+              <p>Que pena! O oponente venceu com {{ opponent?.powerstats.strength }} de força.</p>}
           </ion-card-content>
         </ion-card>
         <ion-button expand="block" color="primary" (click)="newBattle()">

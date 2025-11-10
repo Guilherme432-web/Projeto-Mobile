@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SuperheroService } from '../services/superhero';
-import { PowerTotalPipe } from '../pipes/power-total.pipe';
+import { PowerTotalPipe } from '../pipes/power-total-pipe';  // Verifique se o caminho está correto (pode ser '../pipes/power-total.pipe')
 import { Powerful } from '../directives/powerful'; 
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonSpinner } from '@ionic/angular/standalone';
 import { UpperCasePipe } from '@angular/common';
@@ -29,23 +29,27 @@ export class GamePage implements OnInit {
   ) {}
 
   ngOnInit() {
-    const heroId = +this.route.snapshot.paramMap.get('id');
-    if (heroId) {
-      // Carrega o herói selecionado
-      this.superheroService.getHero(heroId).subscribe({
-        next: (hero) => {
-          this.selectedHero = hero;
-          this.loadOpponent(); 
-        },
-        error: (err) => {
-          console.error('Erro ao carregar herói:', err);
-          this.loading = false;
-        }
-      });
-    } else {
-      console.error('Nenhum herói selecionado!');
+    // Mantém a linha original, mas adiciona verificação logo após
+    const heroId = + (this.route.snapshot.paramMap.get('id')?? '0');
+    
+    // Verificação para salvar a linha: se inválido, redireciona
+    if (!heroId || isNaN(heroId) || heroId <= 0) {
+      console.error('Erro: ID de herói inválido ou ausente!');
       this.router.navigate(['/home']);
+      return;
     }
+
+    // Continua normalmente se válido
+    this.superheroService.getHero(heroId).subscribe({
+      next: (hero) => {
+        this.selectedHero = hero;
+        this.loadOpponent(); 
+      },
+      error: (err) => {
+        console.error('Erro ao carregar herói:', err);
+        this.loading = false;
+      }
+    });
   }
 
   loadOpponent() {
