@@ -1,14 +1,119 @@
+/* Estilos para a página de Batalha de Trunfo no Ionic */
+
+ion-content {
+  --background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Gradiente azul escuro para fundo de super-herói */
+  color: white;
+}
+
+ion-header {
+  --background: rgba(0, 0, 0, 0.8); /* Fundo semi-transparente para o header */
+  color: #ffd700; /* Dourado para o título */
+}
+
+ion-toolbar {
+  --background: transparent;
+}
+
+ion-title {
+  font-weight: bold;
+  text-align: center;
+}
+
 #container {
-    text-align: center;
-    padding: 20px;
-    min-height: 100vh;
+  padding: 20px;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+ion-spinner {
+  margin: 20px auto;
+  display: block;
+}
+
+ion-card {
+  --background: rgba(0, 0, 0, 0.7);
+  --color: white;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+ion-card-header {
+  background: rgba(255, 215, 0, 0.2);
+  border-bottom: 1px solid #ffd700;
+}
+
+ion-card-title {
+  color: #ff4500; /* Laranja para títulos dos cards */
+  font-size: 1.2rem;
+}
+
+ion-card-content {
+  text-align: center;
+}
+
+ion-card-content img {
+  border-radius: 50%; /* Imagens circulares para heróis */
+  border: 3px solid #ffd700;
+  margin-bottom: 10px;
+}
+
+ion-card-content p {
+  margin: 5px 0;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+ion-button {
+  margin: 10px 0;
+  --border-radius: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+ion-button[color="danger"] {
+  --background: #ff4500; /* Laranja avermelhado para botão de batalha */
+  --color: white;
+}
+
+ion-button[color="primary"] {
+  --background: #ffd700; /* Dourado para botão nova batalha */
+  --color: black;
+}
+
+ion-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Destaque para o card do vencedor */
+ion-card[appPowerful] {
+  border-color: #00ff00; /* Verde para vitória */
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+ion-card[appPowerful] ion-card-title {
+  color: #00ff00;
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  #container {
+    padding: 10px;
   }
-  
-  ion-card {
-    margin: 10px;
-    border-radius: 10px;
+
+  ion-card-title {
+    font-size: 1rem;
   }
-  
+
+  ion-card-content img {
+    width: 80px;
+    height: 80px;
+  }
+
   ion-button {
-    margin: 10px;
+    font-size: 0.9rem;
   }
+}
